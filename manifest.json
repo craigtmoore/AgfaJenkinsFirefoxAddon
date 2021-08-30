@@ -1,0 +1,55 @@
+{
+  "manifest_version": 2,
+  "name": "Agfa Jenkins Breadcrumb",
+  "version": "1.0.0",
+  "description": "A Firefox addon for the Agfa Jenkins server, which allows you to copy the page URL into your clipboard as a bread crumb",
+  "homepage_url": "https://github.com/craigtmoore/AgfaJenkinsFirefoxAddon",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "page": "popup/background.html"
+  },
+  "browser_action": {
+    "default_icon": "icons/icon48.png",
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://ei-ci.agfahealthcare.com/jenkins/*",
+        "*://jenkins01-iibu.agfahealthcare.com/*"
+      ],
+      "js": [
+        "content_scripts/content_script.js"
+      ]
+    }
+  ],
+  "commands": {
+    "copy-jira": {
+      "suggested_key": {
+        "default": "Alt+J"
+      },
+      "description": "Copy URL Jira format"
+    },
+    "copy-markdown": {
+      "suggested_key": {
+        "default": "Alt+M"
+      },
+      "description": "Copy URL in markdown Format "
+    },
+    "copy-html": {
+      "suggested_key": {
+        "default": "Alt+H"
+      },
+      "description": "Copy URL in HTML format"
+    }
+  },
+  "permissions": [
+    "clipboardWrite",
+    "activeTab",
+    "storage"
+  ]
+}
