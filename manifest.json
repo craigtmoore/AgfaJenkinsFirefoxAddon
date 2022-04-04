@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Agfa Jenkins Breadcrumb",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A Firefox addon for the Agfa Jenkins server, which allows you to copy the page URL into your clipboard as a bread crumb",
   "homepage_url": "https://github.com/craigtmoore/AgfaJenkinsFirefoxAddon",
   "icons": {

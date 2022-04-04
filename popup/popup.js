@@ -1,7 +1,6 @@
 function onWindowLoad() {
   function showKeybinding(command) {
     console.log(command.shortcut)
-    console.log(command.shortcut)
     if (command.shortcut) {
       document.getElementById(command.name).innerHTML += ' (' + command.shortcut + ')';
     }
