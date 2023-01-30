@@ -7,16 +7,10 @@ chrome.runtime.onMessage.addListener(
 );
 
 var url = window.location.href;
-
 // The column with a link to the latest successful build
 let successColumn = 4;
 // The column with a link to the latest failure build
 let failColumn = 5;
-// There is one less column on the jenkins01-iibu jenkins server
-if (url.includes("jenkins01-iibu")) {
-  successColumn = 3;
-  failColumn = 4;
-}
 
 function addBuildLinks(trElement) {
   let tdSuccessfulBuild = trElement.children[successColumn];
@@ -66,34 +60,39 @@ function addBuildLinksForStatus(jobStatus) {
   }
 }
 
-const jobStatuses = ['job-status-blue', 'job-status-yellow', 'job-status-red', 'job-status-aborted'];
-for (let i = 0; i < jobStatuses.length; i++) {
-  let jobStatus = jobStatuses[i];
-  addBuildLinksForStatus(jobStatus);
-  addBuildLinksForStatus(`${jobStatus}-anime`);
-}
 
-// Add link to team branch and master branch next to the 2nd H1 element on the topic branch page
-if (url.includes("ei-topic-")) {
-  let index = url.indexOf("ei-topic-");
-  let urlPrefix = url.substring(0, index);
-  let tmp = url.slice(index + 9)
-  let teamName = tmp.substring(0, tmp.indexOf("-"));
-  let elementsH1 = document.getElementsByTagName("H1")
-  if (elementsH1.length > 1) {
-    let elementH1 = elementsH1[1];
-    addLinkToTeam(urlPrefix, teamName, elementH1);
-    addLinkToMaster(urlPrefix, elementH1);
+if (!url.includes("jenkins01-iibu")) {
+  const jobStatuses = ['job-status-blue', 'job-status-yellow', 'job-status-red', 'job-status-aborted'];
+  for (let i = 0; i < jobStatuses.length; i++) {
+    let jobStatus = jobStatuses[i];
+    addBuildLinksForStatus(jobStatus);
+    addBuildLinksForStatus(`${jobStatus}-anime`);
   }
-}
 
-// Add link to master branch next to the 2nd H1 element on the team branch page
-if (url.includes("ei-team-")) {
-  let index = url.indexOf("ei-team-");
-  let urlPrefix = url.substring(0, index);
-  let elementsH1 = document.getElementsByTagName("H1")
-  if (elementsH1.length > 1) {
-    let elementH1 = elementsH1[1];
-    addLinkToMaster(urlPrefix, elementH1);
+  // Add link to team branch and master branch next to the 2nd H1 element on the topic branch page
+  if (url.includes("ei-topic-")) {
+    let index = url.indexOf("ei-topic-");
+    let urlPrefix = url.substring(0, index);
+    let tmp = url.slice(index + 9)
+    let teamName = tmp.substring(0, tmp.indexOf("-"));
+    let elementsH1 = document.getElementsByTagName("H1")
+    if (elementsH1.length > 1) {
+      let elementH1 = elementsH1[1];
+      addLinkToTeam(urlPrefix, teamName, elementH1);
+      addLinkToMaster(urlPrefix, elementH1);
+    }
   }
+
+  // Add link to master branch next to the 2nd H1 element on the team branch page
+  if (url.includes("ei-team-")) {
+    let index = url.indexOf("ei-team-");
+    let urlPrefix = url.substring(0, index);
+    let elementsH1 = document.getElementsByTagName("H1")
+    if (elementsH1.length > 1) {
+      let elementH1 = elementsH1[1];
+      addLinkToMaster(urlPrefix, elementH1);
+    }
+  }
+} else {
+  console.info("'Agfa Jenkins Breadcrumb' extension is skipping the update of the project status table for jenkins01-iibu ")
 }
